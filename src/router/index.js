@@ -1,22 +1,70 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import HomeView from '../views/HomeView.vue'
+import Main from '@/views/main_'
+import Login from '@/views/login_'
+import Activiti from '@/views/activiti/index_'
 
 Vue.use(VueRouter)
 
 const routes = [
   {
     path: '/',
-    name: 'home',
-    component: HomeView
+    redirect: '/login'
   },
   {
-    path: '/about',
-    name: 'about',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
+    path: '/login',
+    name: 'Login',
+    component: Login
+  },
+  {
+    path: '/activiti',
+    name: 'Activiti',
+    component: Activiti
+  },
+  {
+    path: '/main',
+    name: 'Main',
+    component: Main,
+    redirect: '/home',
+    children: [
+      {
+        path: '/home',
+        name: 'Home',
+        component: () => import('@/views/home/index_'),
+        nameCN: '首页'
+      },
+      {
+        path: '/tabulation',
+        name: 'Tabulation',
+        component: () => import('@/views/tabulation/index_'),
+        nameCN: '表格'
+      },
+      {
+        path: '/proclamation',
+        name: 'Proclamation',
+        component: () => import('@/views/proclamation/index_'),
+        nameCN: '公告'
+      },
+      {
+        path: '/chart',
+        name: 'Chart',
+        component: () => import('@/views/chart/index_'),
+        nameCN: '图表'
+      },
+      {
+        path: '/work',
+        name: 'Work',
+        component: () => import('@/views/work/index_'),
+        nameCN: '工作流'
+      },
+      {
+        path: '/system',
+        name: 'System',
+        component: () => import('@/views/system/index_'),
+        nameCN: '系统'
+      }
+    ]
+
   }
 ]
 
