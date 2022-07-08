@@ -20,7 +20,7 @@
       fontSize: '12px',
     }" stripe highlight-current-row>
       <el-table-column align="center" label="序号" type="index"></el-table-column>
-      <el-table-column v-for="item in tableHearder" :key="item.value" :label="item.label" :prop="item.value"
+      <el-table-column v-for="item in tableHeader" :key="item.value" :label="item.label" :prop="item.value"
         show-overflow-tooltip>
       </el-table-column>
       <el-table-column fixed="right" label="操作">
@@ -84,7 +84,7 @@ export default {
       pageSize: 10,
       totalSize: 0,
       tableData: [],
-      tableHearder: [
+      tableHeader: [
         { label: '角色名', value: 'role_name' },
         { label: '权限描述', value: 'remark' },
         { label: '创建时间', value: 'create_time' }

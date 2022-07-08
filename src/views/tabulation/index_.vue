@@ -26,7 +26,7 @@
       fontSize: '12px',
     }" stripe highlight-current-row>
       <el-table-column align="center" label="序号" type="index"></el-table-column>
-      <el-table-column v-for="item in tableHearder" :key="item.value" :label="item.label" :prop="item.value">
+      <el-table-column v-for="item in tableHeader" :key="item.value" :label="item.label" :prop="item.value">
         <template slot-scope="scope">
           <el-tag v-if="item.value === 'class_teacher_name'">{{
               scope.row[item.value]
@@ -134,7 +134,7 @@ export default {
       pageSize: 10,
       totalSzie: 0,
       showEdit: false,
-      tableHearder: [
+      tableHeader: [
         { label: '姓名', value: 'name' },
         { label: '年龄', value: 'age' },
         { label: '性别', value: 'sex' },

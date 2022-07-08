@@ -20,7 +20,7 @@
       fontSize: '12px',
     }" stripe highlight-current-row>
       <el-table-column align="center" label="序号" type="index"></el-table-column>
-      <el-table-column v-for="item in tableHearder" :key="item.value" :label="item.label" :prop="item.value"
+      <el-table-column v-for="item in tableHeader" :key="item.value" :label="item.label" :prop="item.value"
         show-overflow-tooltip>
       </el-table-column>
       <el-table-column fixed="right" label="操作">
@@ -87,7 +87,7 @@ export default {
       totalSize: 0,
       showDialog: false,
       showDialogShow: false,
-      tableHearder: [
+      tableHeader: [
         { label: '标题', value: 'title' },
         { label: '内容', value: 'content' },
         { label: '创建人', value: 'username' },
