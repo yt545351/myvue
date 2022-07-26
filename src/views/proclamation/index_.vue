@@ -147,7 +147,7 @@ export default {
         }
       })
     },
-    updataInfo () {
+    updateInfo () {
       this.$http.post('/api/proclamation/update', {
         id: this.info.id,
         title: this.info.title,
@@ -216,7 +216,7 @@ export default {
         this.insertInfo()
       }
       if (this.power === 'update') {
-        this.updataInfo()
+        this.updateInfo()
       }
     }
   }

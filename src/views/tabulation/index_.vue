@@ -51,7 +51,7 @@
     </el-table>
     <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="pageNum"
       :page-sizes="[5, 10, 15, 20]" :page-size="pageSize" layout="total, sizes, prev, pager, next, jumper"
-      :total="totalSzie">
+      :total="totalSize">
     </el-pagination>
     <el-dialog title="编辑" :visible.sync="showEdit" width="40%">
       <el-form :model="studentInfo">
@@ -132,7 +132,7 @@ export default {
       formLabelWidth: '120px',
       pageNum: 1,
       pageSize: 10,
-      totalSzie: 0,
+      totalSize: 0,
       showEdit: false,
       tableHeader: [
         { label: '姓名', value: 'name' },
@@ -177,7 +177,7 @@ export default {
         if (res.data.code === 200) {
           const data = res.data.data
           this.tableData = data.list
-          this.totalSzie = data.totalRows
+          this.totalSize = data.totalRows
         }
       })
     },
@@ -191,7 +191,7 @@ export default {
       })
     },
     // 获取班级列表
-    getClssList () {
+    getClassList () {
       this.$http.post('/api/student/getClassList', { grade: this.search.grade }).then((res) => {
         if (res.data.code === 200) {
           const data = res.data.data
@@ -258,7 +258,7 @@ export default {
     changeGrade () {
       this.search.className = ''
       this.classList = []
-      this.getClssList()
+      this.getClassList()
     },
     // 查询
     handleSearch () {
