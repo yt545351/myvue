@@ -2,7 +2,6 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Main from '@/views/main_'
 import Login from '@/views/login_'
-import Activiti from '@/views/activiti/index_'
 
 Vue.use(VueRouter)
 
@@ -15,11 +14,6 @@ const routes = [
     path: '/login',
     name: 'Login',
     component: Login
-  },
-  {
-    path: '/activiti',
-    name: 'Activiti',
-    component: Activiti
   },
   {
     path: '/main',
@@ -64,8 +58,8 @@ const routes = [
         nameCN: '系统'
       }
     ]
-
   }
+
 ]
 
 const router = new VueRouter({
