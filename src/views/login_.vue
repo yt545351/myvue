@@ -68,6 +68,7 @@ export default {
       }).then(res => {
         if (res.data.code === 200) {
           const data = res.data.data
+          this.$store.commit('setRoleName', data.role_name)
           this.$store.commit('setMenuList', data.menu_json)
           // 跳转页面
           this.$router.push({ path: '/main' })

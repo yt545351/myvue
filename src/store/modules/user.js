@@ -3,6 +3,7 @@ const user = {
     isLogin: false,
     username: '',
     menuList: {},
+    roleName: '',
     activeMenu: '',
     config: {}
   },
@@ -18,6 +19,10 @@ const user = {
     'setMenuList' (state, menuList) {
       sessionStorage.setItem('menuList', menuList)
       state.menuList = menuList
+    },
+    'setRoleName' (state, roleName) {
+      sessionStorage.setItem('roleName', roleName)
+      state.roleName = roleName
     },
     'setActiveMenu' (state, activeMenu) {
       sessionStorage.setItem('activeMenu', activeMenu)
