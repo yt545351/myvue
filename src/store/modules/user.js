@@ -4,8 +4,7 @@ const user = {
     username: '',
     menuList: {},
     roleName: '',
-    activeMenu: '',
-    config: {}
+    activeMenu: ''
   },
   mutations: {
     'setIsLogin' (state, isLogin) {

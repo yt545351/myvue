@@ -107,15 +107,9 @@ export default {
     }
   },
   mounted () {
-    this.getConfig()
     this.queryOneProclamation()
   },
   methods: {
-    getConfig () {
-      // this.axios.get('/config/config-dev.json').then(res => {
-      //   console.log(res)
-      // })
-    },
     // 是否收缩菜单栏
     isShrink () {
       this.isCollapse = this.isCollapse !== true

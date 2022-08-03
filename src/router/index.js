@@ -52,6 +52,12 @@ const routes = [
         nameCN: '工作流'
       },
       {
+        path: '/map',
+        name: 'Map',
+        component: () => import('@/views/map/index_'),
+        nameCN: '地图'
+      },
+      {
         path: '/system',
         name: 'System',
         component: () => import('@/views/system/index_'),
