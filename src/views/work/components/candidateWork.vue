@@ -77,6 +77,11 @@
             <span v-else-if="item.value === 'durationInMillis'">
               {{ dateTransition(scope.row[item.value]) }}
             </span>
+            <span v-else-if="item.value === 'activityName'">
+              <el-tag v-if="scope.row[item.value] === '完成'" type="success"> {{ scope.row[item.value] }}</el-tag>
+              <el-tag v-else-if="scope.row[item.value] === '失败'" type="danger"> {{ scope.row[item.value] }}</el-tag>
+              <el-tag v-else> {{ scope.row[item.value] }}</el-tag>
+            </span>
             <span v-else>{{ scope.row[item.value] }}</span>
           </template>
         </el-table-column>
@@ -178,7 +183,7 @@ export default {
     },
     // 获取流程任务列表
     getProcessTaskList (id) {
-      this.$http.post('/activiti/query/queryProcessTaskList', { instanceId: id }).then(res => {
+      this.$http.post('/activiti/leave/queryProcessTaskList', { instanceId: id }).then(res => {
         if (res.data.code === 200) {
           const data = res.data.data
           data.forEach(item => {

@@ -61,8 +61,11 @@
         <el-form-item label="意见批注">
           <el-input v-model="comment"></el-input>
         </el-form-item>
-        <el-button type="primary" @click="completeTask()">
+        <el-button type="primary" @click="completeTask('1')">
           提交
+        </el-button>
+        <el-button type="info" @click="completeTask('0')">
+          驳回
         </el-button>
       </el-form>
 
@@ -79,6 +82,11 @@
             </span>
             <span v-else-if="item.value === 'durationInMillis'">
               {{ dateTransition(scope.row[item.value]) }}
+            </span>
+            <span v-else-if="item.value === 'activityName'">
+              <el-tag v-if="scope.row[item.value] === '完成'" type="success"> {{ scope.row[item.value] }}</el-tag>
+              <el-tag v-else-if="scope.row[item.value] === '失败'" type="danger"> {{ scope.row[item.value] }}</el-tag>
+              <el-tag v-else> {{ scope.row[item.value] }}</el-tag>
             </span>
             <span v-else>{{ scope.row[item.value] }}</span>
           </template>
@@ -156,7 +164,7 @@ export default {
     },
     // 获取流程任务列表
     getProcessTaskList (id) {
-      this.$http.post('/activiti/query/queryProcessTaskList', { instanceId: id }).then(res => {
+      this.$http.post('/activiti/leave/queryProcessTaskList', { instanceId: id }).then(res => {
         if (res.data.code === 200) {
           const data = res.data.data
           data.forEach(item => {
@@ -168,12 +176,13 @@ export default {
       })
     },
     // 提交任务
-    completeTask () {
+    completeTask (isSucceed) {
       const username = sessionStorage.getItem('username')
       this.$http.post('/activiti/leave/completeTask', {
         taskId: this.rowInfo.id,
         comment: this.comment,
-        assignee: username
+        assignee: username,
+        isSucceed: isSucceed
       }).then(res => {
         if (res.data.code === 200) {
           const data = res.data.data
