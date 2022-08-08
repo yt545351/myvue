@@ -181,7 +181,7 @@ export default {
     // 获取我的所有流程
     getAllProcess () {
       const username = sessionStorage.getItem('username')
-      this.$http.post('/activiti/leave/historyProcessList', {
+      this.$http.post(`${this.$config.API.ACTIVITI}leave/historyProcessList`, {
         processKey: this.applicationType,
         assignee: username,
         pageNum: this.pageNum,

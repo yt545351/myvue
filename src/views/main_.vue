@@ -136,7 +136,7 @@ export default {
     },
     // 获取最新公告
     queryOneProclamation () {
-      this.$http.post('/api/proclamation/getOne').then((res) => {
+      this.$http.post(`${this.$config.API.API}proclamation/getOne`).then((res) => {
         if (res.data.code === 200) {
           const data = res.data.data
           this.proclamation = data

@@ -110,7 +110,7 @@ export default {
         startTime = moment(this.search.date[0]).format('yyyy-MM-DD 00:00:00')
         endTime = moment(this.search.date[1]).format('yyyy-MM-DD 23:59:59')
       }
-      this.$http.post('/api/role/getRoleList', {
+      this.$http.post(`${this.$config.API.API}role/getRoleList`, {
         start_time: startTime,
         end_time: endTime,
         role_name: this.search.roleName,
@@ -157,7 +157,7 @@ export default {
         return
       }
 
-      this.$http.post('/api/role/insert', {
+      this.$http.post(`${this.$config.API.API}role/insert`, {
         role_name: this.roleInfo.role_name,
         menu_json: this.getMenuJson(),
         remark: this.roleInfo.remark
@@ -175,7 +175,7 @@ export default {
     },
     // 更新角色
     updateRole () {
-      this.$http.post('/api/role/update', {
+      this.$http.post(`${this.$config.API.API}role/update`, {
         id: this.roleInfo.id,
         role_id: this.roleInfo.role_id,
         role_name: this.roleInfo.role_name,
@@ -195,7 +195,7 @@ export default {
     },
     // 删除角色
     deleteRole (row) {
-      this.$http.post('/api/role/delete', {
+      this.$http.post(`${this.$config.API.API}role/delete`, {
         id: row.id
       }).then((res) => {
         if (res.data.code === 200) {

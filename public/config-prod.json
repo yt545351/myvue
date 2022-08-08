@@ -1,0 +1,13 @@
+{
+  "ENV": "prod",
+  "API": {
+    "API": {
+      "alias": "/api/",
+      "url": "http://localhost:8081/"
+    },
+    "ACTIVITI": {
+      "alias": "/activiti/",
+      "url": "http://localhost:8083/"
+    }
+  }
+}

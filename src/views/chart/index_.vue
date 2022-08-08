@@ -24,7 +24,7 @@ export default {
   },
   methods: {
     querySchoolList () {
-      this.$http.post('/api/schoolInfo/getList').then((res) => {
+      this.$http.post(`${this.$config.API.API}schoolInfo/getList`).then((res) => {
         if (res.data.code === 200) {
           const data = res.data.data
           const teacherSeries = []

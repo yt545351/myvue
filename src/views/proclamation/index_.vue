@@ -113,7 +113,7 @@ export default {
         startTime = moment(this.search.date[0]).format('yyyy-MM-DD 00:00:00')
         endTime = moment(this.search.date[1]).format('yyyy-MM-DD 23:59:59')
       }
-      this.$http.post('/api/proclamation/getList', {
+      this.$http.post(`${this.$config.API.API}proclamation/getList`, {
         startTime: startTime,
         endTime: endTime,
         title: this.search.title
@@ -131,7 +131,7 @@ export default {
       })
     },
     insertInfo () {
-      this.$http.post('/api/proclamation/insert', {
+      this.$http.post(`${this.$config.API.API}proclamation/insert`, {
         title: this.info.title,
         content: this.info.content,
         username: sessionStorage.getItem('username')
@@ -148,7 +148,7 @@ export default {
       })
     },
     updateInfo () {
-      this.$http.post('/api/proclamation/update', {
+      this.$http.post(`${this.$config.API.API}proclamation/update`, {
         id: this.info.id,
         title: this.info.title,
         content: this.info.content,
@@ -166,7 +166,7 @@ export default {
       })
     },
     deleteInfo (row) {
-      this.$http.post('/api/proclamation/delete', {
+      this.$http.post(`${this.$config.API.API}proclamation/delete`, {
         id: row.id
       }).then((res) => {
         if (res.data.code === 200) {

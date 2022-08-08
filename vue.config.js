@@ -4,6 +4,10 @@ module.exports = defineConfig({
   // 隐藏打包后F12可以看到源代码
   productionSourceMap: false,
   devServer: {
+    // 是否自动弹出浏览器页面
+    // open: true,
+    // 弹出浏览器host
+    // host: 'localhost',
     // 项目启动端口之后会变成3000
     // port: 3000,
     proxy: {

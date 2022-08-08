@@ -38,7 +38,7 @@ export default {
   },
   methods: {
     login () {
-      this.$http.post('/api/user/login', {
+      this.$http.post(`${this.$config.API.API}user/login`, {
         username: this.loginInfo.username,
         password: AES_ENCRYPT(this.loginInfo.password)
       }).then(res => {
@@ -63,7 +63,7 @@ export default {
       })
     },
     getUserMenu () {
-      this.$http.post('/api/user/getUserMenu', {
+      this.$http.post(`${this.$config.API.API}user/getUserMenu`, {
         username: this.loginInfo.username
       }).then(res => {
         if (res.data.code === 200) {

@@ -114,7 +114,7 @@ export default {
         // 如果存在key执行下面内容
         if (mapInfo.key !== undefined) {
           // 获取static下面的json数据
-          const res = await axios.get('http://localhost:8080' + mapInfo.path)
+          const res = await axios.get(mapInfo.path)
           if (mapInfo.key.length === 2) {
             this.mapInfo = mapInfo
             this.mapLevel = 2
@@ -147,7 +147,7 @@ export default {
         revertOption.title.text = '中国'
         this.chart.setOption(revertOption, true)
       } else if (this.mapLevel === 3) { // 地图等级为city,回退到省份
-        axios.get('http://localhost:8080' + this.mapInfo.path).then(res => {
+        axios.get(this.mapInfo.path).then(res => {
           echarts.registerMap(this.mapInfo.key, res.data)
           const revertOption = this.option
           revertOption.geo.map = this.mapInfo.key

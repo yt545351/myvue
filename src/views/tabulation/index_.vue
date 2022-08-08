@@ -173,7 +173,7 @@ export default {
         pageNum: this.pageNum,
         pageSize: this.pageSize
       }
-      this.$http.post('/api/student/query', params).then((res) => {
+      this.$http.post(`${this.$config.API.API}student/query`, params).then((res) => {
         if (res.data.code === 200) {
           const data = res.data.data
           this.tableData = data.list
@@ -183,7 +183,7 @@ export default {
     },
     // 获取年级列表
     getGradeList () {
-      this.$http.post('/api/student/getGradeList').then((res) => {
+      this.$http.post(`${this.$config.API.API}student/getGradeList`).then((res) => {
         if (res.data.code === 200) {
           const data = res.data.data
           this.gradeList = data
@@ -192,7 +192,7 @@ export default {
     },
     // 获取班级列表
     getClassList () {
-      this.$http.post('/api/student/getClassList', { grade: this.search.grade }).then((res) => {
+      this.$http.post(`${this.$config.API.API}student/getClassList`, { grade: this.search.grade }).then((res) => {
         if (res.data.code === 200) {
           const data = res.data.data
           this.classList = data
@@ -219,7 +219,7 @@ export default {
     },
     // 编辑
     handleUpdate () {
-      this.$http.post('/api/student/update', this.studentInfo).then((res) => {
+      this.$http.post(`${this.$config.API.API}student/update`, this.studentInfo).then((res) => {
         if (res.data.code === 200) {
           const data = res.data.data
           this.$message({
@@ -233,7 +233,7 @@ export default {
     },
     // 删除
     handleDelete (row) {
-      this.$http.post('/api/student/delete', row).then((res) => {
+      this.$http.post(`${this.$config.API.API}student/delete`, row).then((res) => {
         if (res.data.code === 200) {
           const data = res.data.data
           this.$message({

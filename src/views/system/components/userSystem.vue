@@ -128,7 +128,7 @@ export default {
     },
     // 获取用户列表
     getUserInfoList () {
-      this.$http.post('/api/user/getUserInfoList', {
+      this.$http.post(`${this.$config.API.API}user/getUserInfoList`, {
         username: this.userInfo.username,
         role_id: this.userInfo.role_id,
         pageNum: this.pageNum,
@@ -148,7 +148,7 @@ export default {
     },
     // 获取角色列表
     getRoleList () {
-      this.$http.post('/api/role/getRoleList', {}).then((res) => {
+      this.$http.post(`${this.$config.API.API}role/getRoleList`, {}).then((res) => {
         if (res.data.code === 200) {
           const data = res.data.data
           const roleMap = {}
@@ -162,7 +162,7 @@ export default {
     },
     // 新增
     insertUser () {
-      this.$http.post('/api/user/insert', {
+      this.$http.post(`${this.$config.API.API}user/insert`, {
         username: this.user.username,
         password: this.user.password,
         tell: this.user.tell,
@@ -183,7 +183,7 @@ export default {
     },
     // 修改
     updateUser () {
-      this.$http.post('/api/user/update', {
+      this.$http.post(`${this.$config.API.API}user/update`, {
         id: this.user.id,
         username: this.user.username,
         password: this.user.password,
@@ -202,7 +202,7 @@ export default {
       })
     },
     deleteUser (row) {
-      this.$http.post('/api/user/delete', {
+      this.$http.post(`${this.$config.API.API}user/delete`, {
         id: row.id
       }).then((res) => {
         if (res.data.code === 200) {

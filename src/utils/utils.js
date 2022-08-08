@@ -10,3 +10,23 @@ export const AES_ENCRYPT = (str) => {
   })
   return encrypted.toString()
 }
+// 获取打包环境配置(dev/prod)
+export const getConfig = config => {
+  const APIObj = config.API
+  for (const i in APIObj) {
+    APIObj[i] = APIObj[i].alias
+  }
+  return Object.freeze(config)
+}
+
+// 获取本地环境配置
+export const getLocalConfig = () => {
+  const config = {
+    ENV: 'local',
+    API: {
+      API: '/api/',
+      ACTIVITI: '/activiti/'
+    }
+  }
+  return Object.freeze(config)
+}
