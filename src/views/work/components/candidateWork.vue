@@ -18,7 +18,9 @@
         show-overflow-tooltip>
         <template slot-scope="scope">
           <span v-if="item.value === 'processName'">
-            {{ scope.row[item.value] === 'Leave' ? "请假" : "其他" }}
+            {{ scope.row[item.value] === 'Leave' ? "请假" :
+                scope.row[item.value] === 'Travel' ? "出差" : "其他"
+            }}
           </span>
           <span v-else>{{ scope.row[item.value] }}</span>
         </template>
@@ -63,6 +65,20 @@
           <el-input v-model="applicationInfo.variables.leaveReason" disabled></el-input>
         </el-form-item>
       </el-form>
+      <el-form :inline="true" class="demo-form-inline" style="float:left"
+        v-if="applicationInfo.processKey === 'Travel'">
+        <el-form-item label="出差日期">
+          <el-date-picker v-model="applicationInfo.checkTime" type="daterange" range-separator="至"
+            start-placeholder="开始日期" end-placeholder="结束日期" style="float:left" disabled>
+          </el-date-picker>
+        </el-form-item>
+        <el-form-item label="出差天数">
+          <el-input v-model="applicationInfo.variables.travelDays" disabled></el-input>
+        </el-form-item>
+        <el-form-item label="出差原因">
+          <el-input v-model="applicationInfo.variables.travelReason" disabled></el-input>
+        </el-form-item>
+      </el-form>
       <el-table :data="processData" style="width: 100%">
         <el-table-column v-for="item in processHeader" :key="item.value" :prop="item.value" :label="item.label">
           <template slot-scope="scope">
@@ -97,7 +113,7 @@ export default {
       applicationType: '',
       applicationTypeList: [
         { value: 'Leave', label: '请假' },
-        { value: 'Evection', label: '出差' },
+        { value: 'Travel', label: '出差' },
         { value: 'Claim', label: '报销' }
       ],
       pageNum: 1,
@@ -117,7 +133,9 @@ export default {
         variables: {
           checkTime: null,
           leaveDays: 0,
-          leaveReason: ''
+          leaveReason: '',
+          travelDays: 0,
+          travelReason: ''
         }
       },
       processData: [],
@@ -161,6 +179,8 @@ export default {
       this.applicationInfo.processKey = row.processName
       this.applicationInfo.variables.leaveDays = row.leaveDays
       this.applicationInfo.variables.leaveReason = row.leaveReason
+      this.applicationInfo.variables.travelDays = row.travelDays
+      this.applicationInfo.variables.travelReason = row.travelReason
       this.applicationInfo.variables.checkTime = [row.beginTime, row.overTime]
       this.getProcessTaskList(row.processInstanceId)
     },

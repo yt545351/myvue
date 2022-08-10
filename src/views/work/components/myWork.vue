@@ -21,7 +21,9 @@
         show-overflow-tooltip>
         <template slot-scope="scope">
           <span v-if="item.value === 'processDefinitionKey'">
-            {{ scope.row[item.value] === 'Leave' ? "请假" : "其他" }}
+            {{ scope.row[item.value] === 'Leave' ? "请假" :
+                scope.row[item.value] === 'Travel' ? "出差" : "其他"
+            }}
           </span>
           <span v-else>{{ scope.row[item.value] }}</span>
         </template>
@@ -58,6 +60,19 @@
         </el-form-item>
         <el-form-item label="请假原因">
           <el-input v-model="showLeaveInfo.variables.leaveReason" disabled></el-input>
+        </el-form-item>
+      </el-form>
+      <el-form :inline="true" class="demo-form-inline" style="float:left" v-if="showLeaveInfo.processKey === 'Travel'">
+        <el-form-item label="出差日期">
+          <el-date-picker v-model="showLeaveInfo.checkTime" type="daterange" range-separator="至"
+            start-placeholder="开始日期" end-placeholder="结束日期" style="float:left" disabled>
+          </el-date-picker>
+        </el-form-item>
+        <el-form-item label="出差天数">
+          <el-input v-model="showLeaveInfo.variables.travelDays" disabled></el-input>
+        </el-form-item>
+        <el-form-item label="出差原因">
+          <el-input v-model="showLeaveInfo.variables.travelReason" disabled></el-input>
         </el-form-item>
       </el-form>
       <el-table :data="processData" style="width: 100%">
@@ -110,6 +125,22 @@
           <el-input v-model="applicationInfo.comment" style="float:left"></el-input>
         </el-form-item>
       </el-form>
+      <el-form label-width="80px" v-if="applicationInfo.processKey === 'Travel'">
+        <el-form-item label="选择日期">
+          <el-date-picker v-model="applicationInfo.variables.checkTime" type="daterange" range-separator="至"
+            start-placeholder="开始日期" end-placeholder="结束日期" style="float:left" @change="getDays()">
+          </el-date-picker>
+        </el-form-item>
+        <el-form-item label="出差天数">
+          <el-input v-model="applicationInfo.variables.travelDays" style="float:left" readonly></el-input>
+        </el-form-item>
+        <el-form-item label="出差原因">
+          <el-input v-model="applicationInfo.variables.travelReason" style="float:left"></el-input>
+        </el-form-item>
+        <el-form-item label="出差备注">
+          <el-input v-model="applicationInfo.comment" style="float:left"></el-input>
+        </el-form-item>
+      </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="processDialog = false">取 消</el-button>
         <el-button type="primary" @click="launchApplication()">申 请</el-button>
@@ -125,7 +156,7 @@ export default {
       applicationType: '',
       applicationTypeList: [
         { value: 'Leave', label: '请假' },
-        { value: 'Evection', label: '出差' },
+        { value: 'Travel', label: '出差' },
         { value: 'Claim', label: '报销' }
       ],
       pageNum: 1,
@@ -148,7 +179,9 @@ export default {
           leaveReason: '',
           assignee: '',
           beginTime: '',
-          overTime: ''
+          overTime: '',
+          travelDays: '',
+          travelReason: ''
         }
 
       },
@@ -168,7 +201,9 @@ export default {
         variables: {
           checkTime: null,
           leaveDays: 0,
-          leaveReason: ''
+          leaveReason: '',
+          travelDays: 0,
+          travelReason: ''
         }
       },
       processDialog: false
@@ -190,8 +225,8 @@ export default {
         if (res.data.code === 200) {
           const data = res.data.data
           data.list.forEach(item => {
-            item.startTime = moment(item.startTime).format('yyyy-MM-DD hh:mm:ss')
-            item.endTime = item.endTime !== undefined ? moment(item.endTime).format('yyyy-MM-DD hh:mm:ss') : ''
+            item.startTime = moment(item.startTime).format('yyyy-MM-DD HH:mm:ss')
+            item.endTime = item.endTime !== undefined ? moment(item.endTime).format('yyyy-MM-DD HH:mm:ss') : ''
           })
           this.tableData = data.list
           this.totalSize = data.totalRows
@@ -200,26 +235,46 @@ export default {
     },
     // 发起申请
     launchApplication () {
-      if (this.applicationInfo.checkTime === null) {
-        this.$message({
-          message: '请选择日期',
-          type: 'warning'
-        })
-        return
+      if (this.applicationInfo.processKey === 'Leave') {
+        if (this.applicationInfo.variables.checkTime === null) {
+          this.$message({
+            message: '请选择日期',
+            type: 'warning'
+          })
+          return
+        }
+        if (this.applicationInfo.variables.leaveReason === '' || this.applicationInfo.variables.leaveReason === null) {
+          this.$message({
+            message: '请填写请假原因',
+            type: 'warning'
+          })
+          return
+        }
+      } else if (this.applicationInfo.processKey === 'Travel') {
+        if (this.applicationInfo.variables.checkTime === null) {
+          this.$message({
+            message: '请选择日期',
+            type: 'warning'
+          })
+          return
+        }
+        if (this.applicationInfo.variables.travelReason === '' || this.applicationInfo.variables.travelReason === null) {
+          this.$message({
+            message: '请填写请假原因',
+            type: 'warning'
+          })
+          return
+        }
       }
-      if (this.applicationInfo.leaveReason === '' || this.applicationInfo.leaveReason === null) {
-        this.$message({
-          message: '请填写请假原因',
-          type: 'warning'
-        })
-        return
-      }
+
       const username = sessionStorage.getItem('username')
       const variables = {
         leaveDays: this.applicationInfo.variables.leaveDays,
         leaveReason: this.applicationInfo.variables.leaveReason,
-        beginTime: moment(this.applicationInfo.variables.checkTime[0]).format('yyyy-MM-DD hh:mm:ss'),
-        overTime: moment(this.applicationInfo.variables.checkTime[1]).format('yyyy-MM-DD hh:mm:ss')
+        travelDays: this.applicationInfo.variables.travelDays,
+        travelReason: this.applicationInfo.variables.travelReason,
+        beginTime: moment(this.applicationInfo.variables.checkTime[0]).format('yyyy-MM-DD HH:mm:ss'),
+        overTime: moment(this.applicationInfo.variables.checkTime[1]).format('yyyy-MM-DD HH:mm:ss')
       }
       this.$http.post('/activiti/leave/startProcess', {
         processKey: this.applicationInfo.processKey,
@@ -257,8 +312,8 @@ export default {
         if (res.data.code === 200) {
           const data = res.data.data
           data.forEach(item => {
-            item.startTime = moment(item.startTime).format('yyyy-MM-DD hh:mm:ss')
-            item.endTime = item.endTime !== undefined ? moment(item.endTime).format('yyyy-MM-DD hh:mm:ss') : ''
+            item.startTime = moment(item.startTime).format('yyyy-MM-DD HH:mm:ss')
+            item.endTime = item.endTime !== undefined ? moment(item.endTime).format('yyyy-MM-DD HH:mm:ss') : ''
           })
           this.processData = data
         }
@@ -300,9 +355,17 @@ export default {
     getDays () {
       if (this.applicationInfo.variables.checkTime !== null) {
         const days = ((Date.parse(this.applicationInfo.variables.checkTime[1]) - Date.parse(this.applicationInfo.variables.checkTime[0])) / (24 * 60 * 60 * 1000)) + 1
-        this.applicationInfo.variables.leaveDays = days
+        if (this.applicationInfo.processKey === 'Leave') {
+          this.applicationInfo.variables.leaveDays = days
+        } else if (this.applicationInfo.processKey === 'Travel') {
+          this.applicationInfo.variables.travelDays = days
+        }
       } else {
-        this.applicationInfo.variables.leaveDays = 0
+        if (this.applicationInfo.processKey === 'Leave') {
+          this.applicationInfo.variables.leaveDays = 0
+        } else if (this.applicationInfo.processKey === 'Travel') {
+          this.applicationInfo.variables.travelDays = 0
+        }
       }
     },
     // 选择每页记录数
