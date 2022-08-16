@@ -20,7 +20,7 @@ export default {
         },
         geo: {
           type: 'map', // 类型
-          map: 'china1',
+          map: 'china',
           itemStyle: {
             areaColor: '#DCDFE6', // 地图整体区域的颜色
             borderColor: '#000'// 地图边界线的颜色
@@ -63,7 +63,7 @@ export default {
           itemWidth: 15, // 图形的宽度，即长条的宽度。
           itemHeight: 60, // 图形的高度，即长条的高度。
           inRange: {
-            color: ['#ffffff', '#0000ff']
+            color: ['#DCDCDC', '#0000ff']
           }
         },
         series: [
@@ -107,7 +107,7 @@ export default {
   methods: {
     initChart () {
       this.chart = echarts.init(this.$refs.chinaMap)
-      echarts.registerMap('china1', chinaJson)
+      echarts.registerMap('china', chinaJson)
       this.chart.setOption(this.option, true)
       this.chart.on('click', async arg => {
         const mapInfo = getMapInfo(arg.name)
@@ -115,6 +115,7 @@ export default {
         if (mapInfo.key !== undefined) {
           // 获取static下面的json数据
           const res = await axios.get(mapInfo.path)
+          console.log(mapInfo)
           if (mapInfo.key.length === 2) {
             this.mapInfo = mapInfo
             this.mapLevel = 2
@@ -127,6 +128,16 @@ export default {
           echarts.registerMap(mapInfo.key, res.data)
           const changeOption = this.option
           changeOption.geo.map = mapInfo.key
+          if (mapInfo.key === '46') {
+            changeOption.geo.center = [109.844902, 19.0392]// 中心位置
+            changeOption.geo.layoutCenter = ['50%', '40%']// 地图相对容器偏移
+            changeOption.geo.layoutSize = '380%'// 地图放大比例
+          } else { // 非显示海南时，将设置的参数恢复默认值
+            changeOption.geo.center = undefined
+            changeOption.geo.layoutCenter = undefined
+            changeOption.geo.layoutSize = undefined
+          }
+
           if (mapInfo.key.length === 2) {
             changeOption.title.text = '中国' + '>' + this.provinceName
           } else {
@@ -141,10 +152,19 @@ export default {
       // console.log(this.mapInfo.path)
       if (this.mapLevel === 2) { // 地图等级为province,回退到全国地图
         const revertOption = this.option
-        revertOption.geo.map = 'china1'
+        revertOption.geo.map = 'china'
         this.mapInfo = {}
         this.mapLevel = 1
         revertOption.title.text = '中国'
+        if (this.mapInfo.key === '46') {
+          revertOption.geo.center = [109.844902, 19.0392]// 中心位置
+          revertOption.geo.layoutCenter = ['50%', '40%']// 地图相对容器偏移
+          revertOption.geo.layoutSize = '380%'// 地图放大比例
+        } else { // 非显示海南时，将设置的参数恢复默认值
+          revertOption.geo.center = undefined
+          revertOption.geo.layoutCenter = undefined
+          revertOption.geo.layoutSize = undefined
+        }
         this.chart.setOption(revertOption, true)
       } else if (this.mapLevel === 3) { // 地图等级为city,回退到省份
         axios.get(this.mapInfo.path).then(res => {
@@ -153,11 +173,20 @@ export default {
           revertOption.geo.map = this.mapInfo.key
           this.mapLevel = 2
           revertOption.title.text = '中国' + '>' + this.provinceName
+          if (this.mapInfo.key === '46') {
+            revertOption.geo.center = [109.844902, 19.0392]// 中心位置
+            revertOption.geo.layoutCenter = ['50%', '40%']// 地图相对容器偏移
+            revertOption.geo.layoutSize = '380%'// 地图放大比例
+          } else { // 非显示海南时，将设置的参数恢复默认值
+            revertOption.geo.center = undefined
+            revertOption.geo.layoutCenter = undefined
+            revertOption.geo.layoutSize = undefined
+          }
           this.chart.setOption(revertOption, true)
         })
       } else if (this.mapLevel === 1) { // 地图等级为country,默认回退到全国
         const revertOption = this.option
-        revertOption.geo.map = 'china1'
+        revertOption.geo.map = 'china'
         revertOption.title.text = '中国'
         this.chart.setOption(revertOption, true)
       }
