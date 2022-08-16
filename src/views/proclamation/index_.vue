@@ -11,7 +11,8 @@
       </el-form-item>
       <el-form-item size="mini">
         <el-button type="primary" @click="handleSearch()">查询</el-button>
-        <el-button type="primary" @click="openDialog()"> 新增 </el-button>
+        <el-button type="primary" @click="openDialog()">新增</el-button>
+        <el-button type="primary" @click="exportExcel()">导出</el-button>
       </el-form-item>
     </el-form>
     <el-table :data="tableData" style="width: 100%" height="619" :header-cell-style="{
@@ -179,6 +180,32 @@ export default {
         }
       })
     },
+    exportExcel () {
+      let startTime = null
+      let endTime = null
+      if (this.search.date !== null) {
+        startTime = moment(this.search.date[0]).format('yyyy-MM-DD 00:00:00')
+        endTime = moment(this.search.date[1]).format('yyyy-MM-DD 23:59:59')
+      }
+      this.$http.post(`${this.$config.API.API}proclamation/exportExcel`, {
+        startTime: startTime,
+        endTime: endTime,
+        title: this.search.title
+      }).then((res) => {
+        if (res && res.data) {
+          const link = document.createElement('a')
+          link.href = window.URL.createObjectURL(new Blob([res.data]))
+          const nowTime = moment().format('YYYYMMDDHHmmssSSS')
+          link.setAttribute('download', `公告列表-${nowTime}.csv`)
+          link.click()
+          link.remove()
+          window.URL.revokeObjectURL(link.href)
+          this.$message.success('导出成功,请查看文件')
+        } else {
+          this.$message.error('导出失败')
+        }
+      })
+    },
     // 选择每页记录数
     handleSizeChange (val) {
       this.pageSize = val
@@ -194,7 +221,6 @@ export default {
       this.content = row.content
       this.title = row.title
     },
-
     openDialog () {
       this.showDialog = true
       this.power = 'insert'

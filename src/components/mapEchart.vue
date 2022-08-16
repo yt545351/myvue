@@ -20,7 +20,7 @@ export default {
         },
         geo: {
           type: 'map', // 类型
-          map: 'china',
+          map: 'china1',
           itemStyle: {
             areaColor: '#DCDFE6', // 地图整体区域的颜色
             borderColor: '#000'// 地图边界线的颜色
@@ -63,7 +63,7 @@ export default {
           itemWidth: 15, // 图形的宽度，即长条的宽度。
           itemHeight: 60, // 图形的高度，即长条的高度。
           inRange: {
-            color: ['#ff0000', '#00ff00', '#00ffff']
+            color: ['#ffffff', '#0000ff']
           }
         },
         series: [
@@ -107,7 +107,7 @@ export default {
   methods: {
     initChart () {
       this.chart = echarts.init(this.$refs.chinaMap)
-      echarts.registerMap('china', chinaJson)
+      echarts.registerMap('china1', chinaJson)
       this.chart.setOption(this.option, true)
       this.chart.on('click', async arg => {
         const mapInfo = getMapInfo(arg.name)
@@ -141,7 +141,7 @@ export default {
       // console.log(this.mapInfo.path)
       if (this.mapLevel === 2) { // 地图等级为province,回退到全国地图
         const revertOption = this.option
-        revertOption.geo.map = 'china'
+        revertOption.geo.map = 'china1'
         this.mapInfo = {}
         this.mapLevel = 1
         revertOption.title.text = '中国'
@@ -157,7 +157,7 @@ export default {
         })
       } else if (this.mapLevel === 1) { // 地图等级为country,默认回退到全国
         const revertOption = this.option
-        revertOption.geo.map = 'china'
+        revertOption.geo.map = 'china1'
         revertOption.title.text = '中国'
         this.chart.setOption(revertOption, true)
       }
