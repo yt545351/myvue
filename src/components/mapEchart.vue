@@ -66,6 +66,9 @@ export default {
             color: ['#DCDCDC', '#0000ff']
           }
         },
+        legend: {
+          show: false
+        },
         series: [
           {
             name: '一本人数',
@@ -115,7 +118,6 @@ export default {
         if (mapInfo.key !== undefined) {
           // 获取static下面的json数据
           const res = await axios.get(mapInfo.path)
-          console.log(mapInfo)
           if (mapInfo.key.length === 2) {
             this.mapInfo = mapInfo
             this.mapLevel = 2
@@ -149,7 +151,6 @@ export default {
       })
     },
     revertMap () {
-      // console.log(this.mapInfo.path)
       if (this.mapLevel === 2) { // 地图等级为province,回退到全国地图
         const revertOption = this.option
         revertOption.geo.map = 'china'
@@ -195,7 +196,6 @@ export default {
     screenAdapter () {
       // 获取自适应大小
       const titleFontSize = this.$refs.chinaMap.offsetWidth / 100 * 3.6
-      console.log('titleFontSize', titleFontSize)
       // 自适应配置
       const adapterOption = {
         title: {
